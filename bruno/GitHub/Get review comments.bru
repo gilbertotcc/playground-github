@@ -1,0 +1,101 @@
+meta {
+  name: Get review comments
+  type: graphql
+  seq: 1
+}
+
+post {
+  url: https://api.github.com/graphql
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query ClosedOrMergedPullRequestsWithReviewComments(
+    $owner: String!
+    $name: String!
+    $afterPR: String
+  ) {
+    repository(owner: $owner, name: $name) {
+      name
+      pullRequests(
+        first: 50
+        after: $afterPR
+        baseRefName: "develop"
+        states: [CLOSED, MERGED]
+        orderBy: { field: UPDATED_AT, direction: DESC }
+      ) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          number
+          title
+          body
+          url
+          headRefName
+          author {
+            login
+          }
+          participants(first: 10) {
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+            nodes {
+              login
+            }
+          }
+          createdAt
+          mergedAt
+          closedAt
+          comments(first: 50) {
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+            nodes {
+              author {
+                login
+              }
+              createdAt
+              updatedAt
+              body
+              url
+            }
+          }
+          reviewThreads(first: 50) {
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+            nodes {
+              comments(first: 50) {
+                nodes {
+                  author {
+                    login
+                  }
+                  createdAt
+                  updatedAt
+                  body
+                  url
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "owner": "gilbertotcc",
+    "name": "playground-github",
+    "after": null
+  }
+  
+}
