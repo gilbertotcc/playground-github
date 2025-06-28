@@ -1,4 +1,0 @@
-[tool.ariadne-codegen]
-schema_path = "graphql/schema.docs.graphql"
-queries_path = "graphql/queries.graphql"
-target = "generated/graphql/client.py"
