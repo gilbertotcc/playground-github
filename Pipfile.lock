@@ -1,7 +1,11 @@
 {
     "_meta": {
         "hash": {
+<<<<<<< HEAD
             "sha256": "139ab68c370becea3128779a883f5ceb06ce3ff804b621993dfc4c2b8a1677c4"
+=======
+            "sha256": "43732e8eb11470648f3325336867d25424abe07087f866734918666fb5da8323"
+>>>>>>> a50c88f (Initialise Python project)
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,6 +20,7 @@
             }
         ]
     },
+<<<<<<< HEAD
     "default": {
         "certifi": {
             "hashes": [
@@ -167,5 +172,8 @@
             "version": "==2.5.0"
         }
     },
+=======
+    "default": {},
+>>>>>>> a50c88f (Initialise Python project)
     "develop": {}
 }
