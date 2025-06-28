@@ -8,6 +8,9 @@ requests = "*"
 click = "*"
 python-dotenv = "*"
 
+[dev-packages]
+ariadne-codegen = "*"
+
 [requires]
 python_version = "3.13"
 python_full_version = "3.13.5"
