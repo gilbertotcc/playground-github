@@ -1,0 +1,44 @@
+meta {
+  name: List repositories
+  type: graphql
+  seq: 3
+}
+
+post {
+  url: https://api.github.com/graphql
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query OrganisationRepositories($org: String!, $afterRepo: String) {
+    organization(login: $org) {
+      repositories(
+        first: 100
+        after: $afterRepo
+        isArchived: false
+        orderBy: { field: UPDATED_AT, direction: DESC }
+      ) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          name
+          isPrivate
+          createdAt
+          updatedAt
+        }
+      }
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "org": "usebruno",
+    "afterRepo": null
+  }
+  
+}

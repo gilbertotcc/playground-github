@@ -1,0 +1,33 @@
+auth {
+  mode: bearer
+}
+
+auth:bearer {
+  token: {{process.env.GITHUB_TOKEN}}
+}
+
+docs {
+  # GitHub collection
+  
+  ## Configuration
+  
+  To execute the examples provided in this collection, it is essential to have a
+  GitHub personal access token (PAT) with the scopes `repo` and `read:org`.
+  You can create it following the instructions available at this link:
+  [Creating a personal access token (classic)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic).
+  
+  Once you have created it, edit a file `.env` where you assign the PAT to the
+  environment variable `GITHUB_TOKEN`:
+  
+  ```dotenv
+  GITHUB_TOKEN=ghp_...XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  ```
+  
+  Bruno will use it for authenticating the requests to the GitHub API.
+  
+  ## References
+  
+  * [GitHub GraphQL API](https://docs.github.com/en/graphql/reference)
+  * [Altair GraphQL Client](https://altairgraphql.dev/)
+  * [GraphQL](https://graphql.org/)
+}
