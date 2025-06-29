@@ -1,4 +1,6 @@
 [tool.ariadne-codegen]
-schema_path = "graphql/schema.docs.graphql"
+schema_path = "graphql/schema.graphql"
 queries_path = "graphql/queries.graphql"
-target = "generated/graphql/client.py"
+target_package_name = "graphql"
+target_package_path = "src/client"
+package_name = "client.graphql"

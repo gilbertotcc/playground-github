@@ -3,6 +3,9 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[scripts]
+generate-graphql-client = "python -m ariadne_codegen client"
+
 [packages]
 requests = "*"
 click = "*"
@@ -14,4 +17,3 @@ ariadne-codegen = "*"
 [requires]
 python_version = "3.13"
 python_full_version = "3.13.5"
-
