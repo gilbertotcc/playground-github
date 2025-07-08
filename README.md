@@ -1,5 +1,9 @@
 # GitHub playground
 
+## Run
+
+TODO
+
 ## Development
 
 The project uses [Ariadne Code Generator](https://github.com/mirumee/ariadne-codegen) to create the

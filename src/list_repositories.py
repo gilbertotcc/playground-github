@@ -30,8 +30,8 @@ def main(org, from_date, to_date):
         github_client = GitHubClient.new_client(github_client_configuration)
 
         repos = await github_client.list_updated_repositories(organization=org,
-                                                        from_date=from_date,
-                                                        to_date=to_date)
+                                                              from_date=from_date,
+                                                              to_date=to_date)
 
     #    repos = list_repositories(organization=org, updated_from=from_date, updated_to=to_date)
         print(f"Found {len(repos)} changed repositories")
