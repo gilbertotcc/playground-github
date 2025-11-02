@@ -1,4 +1,4 @@
-from playgroundgithub.domain.PullRequestUrl import PullRequestUrl
+from playgroundgithub.domain.PullRequestUrl import PullRequestUrl  # type: ignore
 
 
 class TestPullRequestUrl:

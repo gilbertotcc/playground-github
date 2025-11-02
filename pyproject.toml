@@ -15,14 +15,14 @@ dev = [
     "pytest>=8.4.2",
 ]
 
+[tool.uv.build-backend]
+module-root = "src/playgroundgithub"
+
 # PyTest
 [tool.pytest.ini_options]
 pythonpath = "src"
 testpaths = [
     "tests"
-]
-addopts = [
-    "--import-mode=importlib",
 ]
 
 [tool.uv]
