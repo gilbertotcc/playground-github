@@ -1,6 +1,26 @@
+[project]
+name = "playground-github"
+version = "0.0.1"
+requires-python = ">=3.13.0"
+dependencies = [
+    "requests",
+    "click",
+    "python-dotenv",
+]
+
 [tool.ariadne-codegen]
 schema_path = "graphql/schema.graphql"
 queries_path = "graphql/queries.graphql"
 target_package_name = "graphql"
 target_package_path = "src/client"
 package_name = "client.graphql"
+
+[dependency-groups]
+dev = ["ariadne-codegen"]
+
+[tool.uv]
+package = false
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple"
