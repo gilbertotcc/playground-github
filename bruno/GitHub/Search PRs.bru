@@ -1,0 +1,55 @@
+meta {
+  name: Search PRs
+  type: graphql
+  seq: 4
+}
+
+post {
+  url: https://api.github.com/graphql
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query SearchPRsWithKeyword(
+    $query: String!,
+    $after: String
+  ) {
+    search(
+      query: $query,
+      type: ISSUE,
+      first: 100,
+      after: $after
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        ... on PullRequest {
+          id
+          number
+          title
+          url
+          updatedAt
+          comments {
+            totalCount
+          }
+          author {
+            login
+          }
+          repository {
+            nameWithOwner
+          }
+        }
+      }
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "query": "org:totmoney type:pr state:closed sort:updated updated:2025-06-15..2025-07-07"
+  }
+}

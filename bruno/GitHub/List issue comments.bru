@@ -1,0 +1,27 @@
+meta {
+  name: List issue comments
+  type: http
+  seq: 4
+}
+
+get {
+  url: https://api.github.com/repos/:owner/:repo/issues/:issueNumber/comments
+  body: none
+  auth: inherit
+}
+
+params:path {
+  issueNumber: 1
+  repo: docs-parser
+  owner: {{owner}}
+}
+
+headers {
+  Accept: application/vnd.github+json
+  X-GitHub-Api-Version: 2022-11-28
+}
+
+settings {
+  encodeUrl: false
+  timeout: 0
+}
