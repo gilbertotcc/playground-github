@@ -2,8 +2,6 @@
 
 ## Setup
 
-## Setup
-
 The project uses [uv](https://docs.astral.sh/uv/) as the package manager to
 simplify virtual environment setup, package management, and development.
 
@@ -32,8 +30,9 @@ To add new dependencies, use the following command:
 uv add <dependeny>
 ```
 
-The project uses [Ariadne Code Generator](https://github.com/mirumee/ariadne-codegen) to create the
-GitHub GraphQL client.
+The project uses
+[Ariadne Code Generator](https://github.com/mirumee/ariadne-codegen) to create
+the GitHub GraphQL client.
 
 To create it, you must run:
 
