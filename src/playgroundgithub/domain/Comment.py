@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 
-from domain.User import User
+from playgroundgithub.domain.User import User
 
 
 @dataclass(frozen=True)

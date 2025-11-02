@@ -3,15 +3,16 @@ from dataclasses import dataclass
 from github import Auth, Github
 from github.PullRequestComment import PullRequestComment
 
-from domain.Comment import Comment
-from domain.PullRequest import PullRequest
-from domain.User import User
+from playgroundgithub.domain.Comment import Comment
+from playgroundgithub.domain.PullRequestUrl import PullRequestUrl
+from playgroundgithub.domain.User import User
 
 
 @dataclass(frozen=True)
 class Configuration:
     github_pat: str
 
+<<<<<<< HEAD:src/client/GitHubClient.py
 
 class GitHubClient:
     client: Github
@@ -20,6 +21,19 @@ class GitHubClient:
         self.client = client
 
     def get_pr_comments(self, pull_request: PullRequest) -> list[Comment]:
+=======
+@dataclass(frozen=True)
+class GitHubClient(object):
+    client: Github
+
+    @staticmethod
+    def create(configuration: Configuration) -> GitHubClient:
+        auth_token = Auth.Token(configuration.github_pat)
+        client = Github(auth=auth_token)
+        return GitHubClient(client)
+
+    def get_pr_comments(self, pull_request: PullRequestUrl) -> list[Comment]:
+>>>>>>> cb31690 (Save progress):src/playgroundgithub/client/GitHubClient.py
         def to_comment(pr_comment: PullRequestComment) -> Comment:
             return Comment(
                 user=User(pr_comment.user.login),
