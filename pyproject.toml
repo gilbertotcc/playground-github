@@ -4,19 +4,17 @@ version = "0.0.1"
 requires-python = ">=3.13.0"
 dependencies = [
     "requests",
-    "click",
     "python-dotenv",
+    "pygithub>=2.8.1",
 ]
 
-[tool.ariadne-codegen]
-schema_path = "graphql/schema.graphql"
-queries_path = "graphql/queries.graphql"
-target_package_name = "graphql"
-target_package_path = "src/client"
-package_name = "client.graphql"
-
 [dependency-groups]
-dev = ["ariadne-codegen"]
+dev = [
+    "mypy>=1.18.2",
+]
+
+[tool.pytest.ini_options]
+pythonpath = "src"
 
 [tool.uv]
 package = false
@@ -24,3 +22,8 @@ package = false
 [[tool.uv.index]]
 name = "pypi"
 url = "https://pypi.org/simple"
+
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
