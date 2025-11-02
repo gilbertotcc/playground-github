@@ -11,6 +11,21 @@ To install the required packages, run the following command:
 uv sync
 ```
 
+### Gemini CLI
+
+This project uses Gemini CLI.
+To enable its features, configure the following environment variables and save
+them in a `.env` file.
+
+* `GITHUB_TOKEN`: GitHub Personal Access Token required for the GitHub MCP server.
+  See [Managing your personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+  for token creation instructions.
+* `CONTEXT7_API_KEY`: Context7 API key.
+  See [Context7](https://github.com/upstash/context7).
+
+* `GITHUB_TOKEN`
+* `CONTEXT7_API_KEY`
+
 ## Run
 
 TODO
