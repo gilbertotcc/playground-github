@@ -3,7 +3,8 @@ from github import Github, Auth
 from github.PullRequestComment import PullRequestComment
 
 from domain.Comment import Comment
-from domain.user import User
+from domain.PullRequest import PullRequest
+from domain.User import User
 
 
 @dataclass(frozen=True)
@@ -23,16 +24,19 @@ class GitHubClient(object):
         client = Github(auth=auth_token)
         return GitHubClient(client)
 
-    def get_pr_comments(self, owner: str, repository: str, pr_number: int) -> list[Comment]:
-        def to_pull_request_comment(pull_request_comment: PullRequestComment) -> Comment:
+    def get_pr_comments(self, pull_request: PullRequest) -> list[Comment]:
+        def to_comment(pr_comment: PullRequestComment) -> Comment:
             return Comment(
-                user=User(pull_request_comment.user.login),
-                url=pull_request_comment.url,
-                created_at=pull_request_comment.created_at
+                user=User(pr_comment.user.login),
+                url=pr_comment.html_url,
+                updated_at=pr_comment.updated_at
             )
 
-        comments = self.client.get_repo(f"{owner}/{repository}").get_pull(pr_number).get_review_comments()
-        return [to_pull_request_comment(comment) for comment in comments]
+        comments = (self.client
+                    .get_repo(f"{pull_request.owner}/{pull_request.repository}")
+                    .get_pull(pull_request.number)
+                    .get_review_comments())
+        return [to_comment(comment) for comment in comments]
 
-    def close(self):
+    def close(self) -> None:
         self.client.close()
