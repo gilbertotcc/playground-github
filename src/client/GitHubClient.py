@@ -1,115 +1,38 @@
 from dataclasses import dataclass
-from datetime import datetime
-from typing import List
+from github import Github, Auth
+from github.PullRequestComment import PullRequestComment
 
-from client.graphql import Client, OrganisationRepositoriesOrganizationRepositoriesNodes, \
-    ClosedOrMergedPullRequestsWithReviewCommentsRepositoryPullRequestsNodes
-from domain.pullrequest import PullRequest
-from domain.repository import Repository
+from domain.Comment import Comment
+from domain.user import User
 
 
-def repository_from_node(
-        organization: str,
-        node: OrganisationRepositoriesOrganizationRepositoriesNodes) -> Repository:
-    return Repository(organization=organization, name=node.name)
-
-
-def pull_request_from_node(
-        node: ClosedOrMergedPullRequestsWithReviewCommentsRepositoryPullRequestsNodes,
-        repository: Repository
-) -> PullRequest:
-    author = 
-
-    return PullRequest(
-        repository=repository,
-        number=node.number,
-        title=node.title,
-        body=node.body,
-        author=
-    )
-
-
-@dataclass
+@dataclass(frozen=True)
 class Configuration(object):
-    github_token: str
+    github_pat: str
 
-@dataclass
+
 class GitHubClient(object):
-    graphql_client: Client
+    client: Github
 
-    async def list_updated_repositories(self,
-                                        organization: str,
-                                        from_date: datetime,
-                                        to_date: datetime) -> List[Repository]:
-
-        repositories: List[Repository] = []
-        cursor = None
-
-        while True:
-            raw_result = await self.graphql_client.organisation_repositories(
-                org=organization, after_repo=cursor
-            )
-
-            nodes = raw_result.organization.repositories.nodes
-            page_info = raw_result.organization.repositories.page_info
-
-            for node in nodes:
-                updated_at = datetime.fromisoformat(node.updated_at)
-                if from_date <= updated_at <= to_date:
-                    repository = repository_from_node(organization, node)
-                    repositories.append(repository)
-                elif updated_at < from_date:
-                    return repositories
-
-            if page_info.has_next_page and page_info.end_cursor:
-                cursor = page_info.end_cursor
-            else:
-                break
-
-        return repositories
-
-
-
-    async def list_pull_requests(self,
-                                 repository: Repository,
-                                 from_date: datetime,
-                                 to_date: datetime)\
-            -> List[PullRequest]:
-
-        pull_requests = []
-        cursor = None
-
-        while True:
-            raw_result = await self.graphql_client.closed_or_merged_pull_requests_with_review_comments(
-                owner=repository.organization,
-                name=repository.name
-            )
-
-            nodes = raw_result.repository.pull_requests.nodes
-            page_info = raw_result.repository.pull_requests.page_info
-
-            for node in nodes:
-                updated_at = datetime.fromisoformat(node.updated_at)
-                if from_date <= updated_at <= to_date:
-                    repository =
-                    repositories.append(repository)
-                elif updated_at < from_date:
-                    return repositories
-
-            if page_info.has_next_page and page_info.end_cursor:
-                cursor = page_info.end_cursor
-            else:
-                break
-
-        return pull_requests
-
+    def __init__(self, client: Github):
+        self.client = client
 
     @staticmethod
-    def new_client(configuration: Configuration) -> "GitHubClient":
-        graphql_client = Client(
-            url="https://api.github.com/graphql",
-            headers={
-                "Authorization": f"Bearer {configuration.github_token}"
-            }
-        )
-        return GitHubClient(graphql_client)
+    def create(configuration: Configuration) -> GitHubClient:
+        auth_token = Auth.Token(configuration.github_pat)
+        client = Github(auth=auth_token)
+        return GitHubClient(client)
+
+    def get_pr_comments(self, owner: str, repository: str, pr_number: int) -> list[Comment]:
+        def to_pull_request_comment(pull_request_comment: PullRequestComment) -> Comment:
+            return Comment(
+                user=User(pull_request_comment.user.login),
+                url=pull_request_comment.url,
+                created_at=pull_request_comment.created_at
+            )
+
+        comments = self.client.get_repo(f"{owner}/{repository}").get_pull(pr_number).get_review_comments()
+        return [to_pull_request_comment(comment) for comment in comments]
+
+    def close(self):
+        self.client.close()
