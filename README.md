@@ -23,9 +23,6 @@ them in a `.env` file.
 * `CONTEXT7_API_KEY`: Context7 API key.
   See [Context7](https://github.com/upstash/context7).
 
-* `GITHUB_TOKEN`
-* `CONTEXT7_API_KEY`
-
 ## Run
 
 TODO
