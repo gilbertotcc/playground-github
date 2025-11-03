@@ -1,24 +1,23 @@
-import json
 import os
 
 from dotenv import load_dotenv
 
-from client.GitHubClient import Configuration, GitHubClient
-from domain.PullRequest import PullRequest
+from client.GitHubClient import Configuration, create_github_client
+from domain.PullRequest import pull_request_from_url
 
 load_dotenv()
 
 
 def main() -> None:
     configuration = Configuration(os.getenv("GITHUB_TOKEN") or "")
-    client = GitHubClient.create(configuration)
+    client = create_github_client(configuration)
 
-    pull_request = PullRequest.from_url("https://github.com/totmoney/docs-parser/pull/2")
+    pull_request = pull_request_from_url("https://github.com/totmoney/docs-parser/pull/2")
 
     comments = client.get_pr_comments(pull_request)
-    counter = 0
+    counter: int = 0
     for comment in comments:
-        counter += 1
+        counter = counter + 1
         print(f"{counter}: Found comment {comment.url} by {comment.user.login_name}")
 
     client.close()

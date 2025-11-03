@@ -11,6 +11,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "mypy>=1.18.2",
+    "ruff>=0.14.3",
 ]
 
 [tool.pytest.ini_options]
@@ -27,3 +28,19 @@ url = "https://pypi.org/simple"
 python_version = "3.13"
 warn_return_any = true
 warn_unused_configs = true
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]

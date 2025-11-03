@@ -5,10 +5,11 @@ from domain.User import User
 
 
 @dataclass(frozen=True)
-class Comment(object):
+class Comment:
     user: User
     url: str
     updated_at: datetime
 
     def __str__(self) -> str:
-        return f"Comment(updated_at={self.updated_at}, user={self.user}, url={self.url})"
+        return \
+            f"Comment(updated_at={self.updated_at}, user={self.user}, url={self.url})"
