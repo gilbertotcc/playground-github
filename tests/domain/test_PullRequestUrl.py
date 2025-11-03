@@ -1,4 +1,6 @@
-from playgroundgithub.domain.PullRequestUrl import PullRequestUrl  # type: ignore
+from playgroundgithub.domain.PullRequestUrl import PullRequestUrl
+
+import pytest
 
 
 class TestPullRequestUrl:
@@ -11,3 +13,11 @@ class TestPullRequestUrl:
         assert pull_request_url.owner == "gilbertotcc"
         assert pull_request_url.repository == "playground-bluetooth"
         assert pull_request_url.number == 1
+
+    def test_from_url_should_fail(self) -> None:
+        url = "https://github.com/..."
+
+        with pytest.raises(ValueError) as exception_info:
+            PullRequestUrl.from_url(url)
+
+        assert "Invalid pull request URL " in str(exception_info.value)

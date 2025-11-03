@@ -1,7 +1,7 @@
 import re
 from dataclasses import dataclass
 
-PR_URL_TEMPLATE = re.compile("^https://github.com/([^/]+)/([^/]+)/pull/([0-9]+)$")
+PR_URL_TEMPLATE = re.compile(r"^https://github.com/([^/]+)/([^/]+)/pull/([0-9]+)$")
 
 @dataclass
 class PullRequestUrl:
