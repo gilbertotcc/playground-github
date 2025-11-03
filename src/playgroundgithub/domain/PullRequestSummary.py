@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from datetime import datetime
 
-from playgroundgithub.domain import PullRequestUrl
 from playgroundgithub.domain.Comment import Comment
+from playgroundgithub.domain.PullRequestUrl import PullRequestUrl
 from playgroundgithub.domain.User import User
 
 
