@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 
-from playgroundgithub.domain.Comment import Comment
+from playgroundgithub.domain.Comment import PullRequestComment
 from playgroundgithub.domain.PullRequestUrl import PullRequestUrl
 from playgroundgithub.domain.User import User
 
@@ -14,7 +14,7 @@ class PullRequestSummary:
     created_at: datetime
     participant_comments_count: dict[User, int] = field(default_factory=dict)
 
-    def add_comment(self, comment: Comment) -> "PullRequestSummary":
+    def add_comment(self, comment: PullRequestComment) -> "PullRequestSummary":
         new_comments_count = self.participant_comments_count.copy()
         new_comments_count[comment.user] = self.participant_comments_count\
             .get(comment.user, 0) + 1

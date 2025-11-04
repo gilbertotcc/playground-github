@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from playgroundgithub.domain.Comment import Comment
+from playgroundgithub.domain.Comment import PullRequestComment
 from playgroundgithub.domain.PullRequestSummary import PullRequestSummary
 from playgroundgithub.domain.PullRequestUrl import PullRequestUrl
 from playgroundgithub.domain.User import User
@@ -15,7 +15,7 @@ class TestPullRequestSummary:
             author=User("author"),
             created_at=datetime.now(),
         )
-        comment = Comment(
+        comment = PullRequestComment(
             User("commenter"),
             "https://github.com/owner/repo/pull/1#issuecomment-1", datetime.now())
 

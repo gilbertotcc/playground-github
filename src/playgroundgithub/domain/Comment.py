@@ -5,7 +5,7 @@ from playgroundgithub.domain.User import User
 
 
 @dataclass(frozen=True)
-class Comment:
+class PullRequestComment:
     user: User
     url: str
     updated_at: datetime
