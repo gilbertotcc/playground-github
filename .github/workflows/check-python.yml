@@ -20,7 +20,7 @@ jobs:
         run: uv sync --dev
 
       - name: Run Linter
-        run: uv ruff check
+        run: uv run ruff check
 
       - name: Run type checker
         run: uv run mypy

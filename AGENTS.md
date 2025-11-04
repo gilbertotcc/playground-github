@@ -16,10 +16,10 @@ The project is structured into two main parts:
   `GitHubClient` to fetch comments for a pull request.
 * **`src/playgroundgithub`**: The main application package, containing the
   following modules:
-    * **`client`**: Contains the `GitHubClient` for interacting with the GitHub
-      API.
-    * **`domain`**: Defines the data models for the application, such as
-      `Comment`, `PullRequestUrl`, `PullRequestSummary`, and `User`.
+  * **`client`**: Contains the `GitHubClient` for interacting with the GitHub
+    API.
+  * **`domain`**: Defines the data models for the application, such as
+    `Comment`, `PullRequestUrl`, `PullRequestSummary`, and `User`.
 
 ## Building and Running
 
@@ -77,13 +77,13 @@ markdownlint-cli2 --fix <filename>
 
 The project follows a simple architecture:
 
-*   **Domain Objects**: The `domain` package contains plain old Python objects
-    (POPOs) that represent the application's data models. These objects are
-    immutable (where appropriate) and have no knowledge of how they are persisted
-    or retrieved.
-*   **Client**: The `client` package contains the `GitHubClient`, which is
-    responsible for interacting with the GitHub API. It takes domain objects as
-    input and returns domain objects as output. This separation of concerns
-    makes the application easier to test and maintain.
-*   **Scripts**: The `src` directory contains scripts that use the `client` and
-    `domain` packages to implement the application's functionality.
+* **Domain Objects**: The `domain` package contains plain old Python objects
+  (POPOs) that represent the application's data models. These objects are
+  immutable (where appropriate) and have no knowledge of how they are persisted
+  or retrieved.
+* **Client**: The `client` package contains the `GitHubClient`, which is
+  responsible for interacting with the GitHub API. It takes domain objects as
+  input and returns domain objects as output. This separation of concerns
+  makes the application easier to test and maintain.
+* **Scripts**: The `src` directory contains scripts that use the `client` and
+  `domain` packages to implement the application's functionality.
