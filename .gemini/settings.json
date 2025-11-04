@@ -17,7 +17,10 @@
   },
   "ignore": [
     ".git/**",
-    ".github/**"
+    ".github/**",
+    ".idea/**",
+    ".*_cache/**",
+    ".venv/**"
   ],
   "mcpServers": {
     "github": {

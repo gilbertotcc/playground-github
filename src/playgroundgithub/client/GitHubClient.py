@@ -3,9 +3,9 @@ from dataclasses import dataclass
 from github import Auth, Github
 from github.PullRequestComment import PullRequestComment
 
-from domain.Comment import Comment
-from domain.PullRequest import PullRequest
-from domain.User import User
+from playgroundgithub.domain.Comment import Comment
+from playgroundgithub.domain.PullRequestUrl import PullRequestUrl
+from playgroundgithub.domain.User import User
 
 
 @dataclass(frozen=True)
@@ -19,7 +19,7 @@ class GitHubClient:
     def __init__(self, client: Github):
         self.client = client
 
-    def get_pr_comments(self, pull_request: PullRequest) -> list[Comment]:
+    def get_pr_comments(self, pull_request: PullRequestUrl) -> list[Comment]:
         def to_comment(pr_comment: PullRequestComment) -> Comment:
             return Comment(
                 user=User(pr_comment.user.login),
