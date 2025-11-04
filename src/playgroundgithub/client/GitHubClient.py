@@ -4,8 +4,8 @@ from github import Auth, Github
 from github.PullRequest import PullRequest as GithubPullRequest
 from github.PullRequestComment import PullRequestComment as GithubPullRequestComment
 
-from playgroundgithub.domain.Comment import PullRequestComment
-from playgroundgithub.domain.PullRequestComment import PullRequest
+from playgroundgithub.domain.PullRequest import PullRequest
+from playgroundgithub.domain.PullRequestComment import PullRequestComment
 from playgroundgithub.domain.PullRequestUrl import PullRequestUrl
 from playgroundgithub.domain.User import User
 
