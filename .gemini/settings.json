@@ -19,7 +19,7 @@
     ".git/**",
     ".github/**",
     ".idea/**",
-    ".mypycache__/**",
+    ".*_cache/**",
     ".venv/**"
   ],
   "mcpServers": {

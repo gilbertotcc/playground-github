@@ -1,24 +1,14 @@
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 PR_URL_TEMPLATE = re.compile(r"^https://github.com/([^/]+)/([^/]+)/pull/([0-9]+)$")
 
-@dataclass
+@dataclass(frozen=True)
 class PullRequestUrl:
     url: str
-    owner: str
-    repository: str
-    number: int
-
-    def __init__(self, url: str, owner: str, repository: str, number: int):
-        self.url = url
-        self.owner = owner
-        self.repository = repository
-        self.number = number
-
-    def __str__(self) -> str:
-        return f"PullRequest(url={self.url})"
-
+    owner: str = field(repr=False)
+    repository: str = field(repr=False)
+    number: int = field(repr=False)
 
 def pull_request_from_url(url: str) -> PullRequestUrl:
     match = PR_URL_TEMPLATE.match(url)

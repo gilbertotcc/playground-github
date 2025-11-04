@@ -42,6 +42,61 @@ To add new dependencies, use the following command:
 uv add <dependeny>
 ```
 
+### Checks
+
+To run the tests use:
+
+```sh
+uv run pytest
+```
+
+To verify code quality use the following commands:
+
+```sh
+uv run mypy
+uv run ruff check
+```
+
+## Bruno collection
+
+This project provides a [Bruno](https://www.usebruno.com/) collection in the
+folder `bruno` for working with the GitHub API.
+It allows you to test API operations during Python development.
+
+Before using this collection, create your own GitHub Personal Access Token and
+save it in a `.env` file in the `bruno/GitHub` directory.
+The `.env.example` file in the repository provides a template with a sample
+value.
+
+For more information on creating a token, please refer to the official
+documentation on
+[Managing your personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
+
+## Markdown style
+
+Markdown files in this repository must follow the rules defined in the
+configuration file `.markdownlint.json`.
+
+To check if Markdown files satisfy the rules, run this command:
+
+```sh
+markdownlint-cli2 <filename>
+```
+
+You can also use `--fix` parameter to let the linter to fix fixable errors.
+
+```sh
+markdownlint-cli2 --fix <filename>
+```
+
+## Resources
+
+* <https://docs.github.com/public/fpt/schema.docs.graphql>
+
+---
+
+## Outdated content
+
 The project uses
 [Ariadne Code Generator](https://github.com/mirumee/ariadne-codegen) to create
 the GitHub GraphQL client.
@@ -61,22 +116,3 @@ The resulting files will be placed in the directory `src/client/graphql`.
   * Max comments: 50
   * Max review threads: 50
   * Max comments per review thread: 50
-
-## Bruno collection
-
-This project provides a [Bruno](https://www.usebruno.com/) collection in the
-folder `bruno` for working with the GitHub API.
-It allows you to test API operations during Python development.
-
-Before using this collection, create your own GitHub Personal Access Token and
-save it in a `.env` file in the `bruno/GitHub` directory.
-The `.env.example` file in the repository provides a template with a sample
-value.
-
-For more information on creating a token, please refer to the official
-documentation on
-[Managing your personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
-
-## Resources
-
-* <https://docs.github.com/public/fpt/schema.docs.graphql>
