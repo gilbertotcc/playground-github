@@ -61,6 +61,18 @@ uv run mypy
 uv run ruff check
 ```
 
+To check Markdown files quality, run this command:
+
+```sh
+markdownlint-cli2 <filename>
+```
+
+You can also use `--fix` parameter to let the linter to fix fixable errors.
+
+```sh
+markdownlint-cli2 --fix <filename>
+```
+
 ## Project Architecture
 
 The project follows a simple architecture:
