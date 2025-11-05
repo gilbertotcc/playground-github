@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from github import Auth, Github
+from github.IssueComment import IssueComment as GithubIssueComment
 from github.PullRequest import PullRequest as GithubPullRequest
 from github.PullRequestComment import PullRequestComment as GithubPullRequestComment
 
@@ -38,8 +39,8 @@ class GitHubClient:
         return self._to_pull_request(pull_request, pull_request_url)
 
     def get_pr_comments(
-            self, pull_request_url: PullRequestUrl
-        ) -> list[PullRequestComment]:
+        self, pull_request_url: PullRequestUrl
+    ) -> list[PullRequestComment]:
         """
         Gets the comments of a pull request.
 
@@ -47,8 +48,17 @@ class GitHubClient:
         :return: The comments of the pull request.
         """
         pull_request = self._get_pull_request(pull_request_url)
-        comments = pull_request.get_review_comments()
-        return [self._to_comment(comment) for comment in comments]
+        review_comments = pull_request.get_review_comments()
+
+        issue = self.client.get_repo(
+            f"{pull_request_url.owner}/{pull_request_url.repository}"
+        ).get_issue(pull_request_url.number)
+        issue_comments = issue.get_comments()
+
+        comments = [self._to_comment(comment) for comment in review_comments]
+        comments.extend([self._to_comment(comment) for comment in issue_comments])
+
+        return comments
 
     def close(self) -> None:
         """
@@ -73,7 +83,9 @@ class GitHubClient:
         )
 
     @staticmethod
-    def _to_comment(pr_comment: GithubPullRequestComment) -> PullRequestComment:
+    def _to_comment(
+        pr_comment: GithubPullRequestComment | GithubIssueComment
+    ) -> PullRequestComment:
         return PullRequestComment(
             user=User(pr_comment.user.login),
             url=pr_comment.html_url,
