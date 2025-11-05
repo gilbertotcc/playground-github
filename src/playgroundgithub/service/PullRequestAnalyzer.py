@@ -29,6 +29,6 @@ class PullRequestAnalyzer:
 
         comments = self.github_client.get_pr_comments(pull_request_url)
         for comment in comments:
-            metrics = metrics.add_comment(comment)
+            metrics.add_comment(comment)
 
         return metrics

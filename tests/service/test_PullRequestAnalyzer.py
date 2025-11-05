@@ -16,9 +16,6 @@ def create_pull_request_comment(user: str, url: str) -> PullRequestComment:
     )
 
 class TestPullRequestAnalyzer:
-    def _create_comment(self, username: str, url: str) -> PullRequestComment:
-        return PullRequestComment(User(username), url, datetime.now())
-
     def test_analyze_pull_request_should_succeed(self) -> None:
         # Arrange
         github_client = MagicMock()

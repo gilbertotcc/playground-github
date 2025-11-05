@@ -22,7 +22,6 @@ class TestPullRequestMetrics:
             "https://github.com/owner/repo/pull/1#issuecomment-1", datetime.now()
         )
 
-        new_metrics = metrics.add_comment(comment)
+        metrics.add_comment(comment)
 
-        assert new_metrics is not metrics
-        assert new_metrics.participant_comments_count[User("commenter")] == 1
+        assert metrics.participant_comments_count[User("commenter")] == 1
