@@ -17,7 +17,7 @@ def main() -> None:
     counter: int = 0
     for comment in comments:
         counter = counter + 1
-        print(f"{counter}: Found comment {comment.url} by {comment.user.login_name}")
+        print(f"{counter}: Found comment {comment.url} by {comment.user.name}")
 
     client.close()
 

@@ -1,16 +1,16 @@
 import csv
 import io
 
-from playgroundgithub.domain.PullRequestMetrics import PullRequestMetrics
+from playgroundgithub.domain.PullRequestAnalysis import PullRequestAnalysis
 from playgroundgithub.domain.User import User
 
 
-def csv_repport_of(pull_request_metrics: list[PullRequestMetrics]) -> str:
+def csv_repport_of(pull_request_analysis: list[PullRequestAnalysis]) -> str:
     unique_participants: set[User] = set()
-    for pr_metrics in pull_request_metrics:
-        unique_participants.update(pr_metrics.participant_comments_count.keys())
+    for pr_analysis in pull_request_analysis:
+        unique_participants.update(pr_analysis.user_comment_counts.keys())
 
-    sorted_participants = sorted(list(unique_participants), key=lambda u: u.login_name)
+    sorted_participants = sorted(list(unique_participants), key=lambda u: u.name)
 
     header = [
         "Pull Request URL",
@@ -18,21 +18,21 @@ def csv_repport_of(pull_request_metrics: list[PullRequestMetrics]) -> str:
         "Author",
         "Created At",
         "Comments Count",
-    ] + [user.login_name for user in sorted_participants]
+    ] + [user.name for user in sorted_participants]
 
     rows = [header]
-    for pr_metrics in pull_request_metrics:
-        comments_count = sum(pr_metrics.participant_comments_count.values())
+    for pr_analysis in pull_request_analysis:
+        comments_count = sum(pr_analysis.user_comment_counts.values())
         row = [
-            str(pr_metrics.pull_request.url.url),
-            str(pr_metrics.pull_request.title),
-            str(pr_metrics.pull_request.author.login_name),
-            str(pr_metrics.pull_request.created_at),
+            str(pr_analysis.pull_request.url.url),
+            str(pr_analysis.pull_request.title),
+            str(pr_analysis.pull_request.author.name),
+            str(pr_analysis.pull_request.created_at),
             str(comments_count),
         ]
         row.extend(
             [
-                str(pr_metrics.participant_comments_count.get(participant, 0))
+                str(pr_analysis.user_comment_counts.get(participant, 0))
                 for participant in sorted_participants
             ]
         )

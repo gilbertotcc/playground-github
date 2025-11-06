@@ -14,7 +14,7 @@ def main() -> None:
 
     pull_request = client.get_pr(pull_request_url)
     print(
-        f"Found pull request: {pull_request.title} by {pull_request.author.login_name}"
+        f"Found pull request: {pull_request.title} by {pull_request.author.name}"
     )
     print(f"URL: {pull_request.url.url}")
     print(f"Created at: {pull_request.created_at}")

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from playgroundgithub.client.GitHubClient import GitHubClient
-from playgroundgithub.domain.PullRequestMetrics import PullRequestMetrics
+from playgroundgithub.domain.PullRequestAnalysis import PullRequestAnalysis
 from playgroundgithub.domain.PullRequestUrl import PullRequestUrl
 
 
@@ -11,24 +11,24 @@ class PullRequestAnalyzer:
 
     def analyze_pull_requests(
             self, pull_request_urls: list[PullRequestUrl]
-        ) -> list[PullRequestMetrics]:
+        ) -> list[PullRequestAnalysis]:
         
-        all_metrics = []
+        all_analysis = []
         for pull_request_url in pull_request_urls:
-            pr_metrics = self.analyze_pull_request(pull_request_url)
-            all_metrics.append(pr_metrics)
+            pr_analysis = self.analyze_pull_request(pull_request_url)
+            all_analysis.append(pr_analysis)
 
-        return all_metrics
+        return all_analysis
   
     def analyze_pull_request(
             self, pull_request_url: PullRequestUrl
-        ) -> PullRequestMetrics:
+        ) -> PullRequestAnalysis:
 
         pull_request = self.github_client.get_pr(pull_request_url)
-        metrics = PullRequestMetrics(pull_request=pull_request)
+        analysis = PullRequestAnalysis(pull_request=pull_request)
 
         comments = self.github_client.get_pr_comments(pull_request_url)
         for comment in comments:
-            metrics = metrics.add_comment(comment)
+            analysis.add_comment(comment)
 
-        return metrics
+        return analysis
