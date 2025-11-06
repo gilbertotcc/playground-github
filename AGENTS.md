@@ -19,7 +19,10 @@ The project is structured into two main parts:
   * **`client`**: Contains the `GitHubClient` for interacting with the GitHub
     API.
   * **`domain`**: Defines the data models for the application, such as
-    `Comment`, `PullRequestUrl`, `PullRequestSummary`, and `User`.
+    `PullRequest`, `PullRequestComment`, `PullRequestAnalysis`,
+    `PullRequestUrl`, and `User`.
+  * **`service`**: Contains the business logic of the application.
+  * **`utils`**: Contains utility functions.
 
 ## Building and Running
 
@@ -85,5 +88,9 @@ The project follows a simple architecture:
   responsible for interacting with the GitHub API. It takes domain objects as
   input and returns domain objects as output. This separation of concerns
   makes the application easier to test and maintain.
+* **Service**: The `service` package contains the `PullRequestAnalyzer`, which
+  is responsible for analyzing pull requests and generating metrics.
 * **Scripts**: The `src` directory contains scripts that use the `client` and
   `domain` packages to implement the application's functionality.
+* **Utils**: The `utils` package contains utility functions for reading and
+  writing files.

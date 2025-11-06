@@ -6,11 +6,11 @@ from playgroundgithub.domain.User import User
 
 
 @dataclass
-class PullRequestMetrics:
+class PullRequestAnalysis:
     pull_request: PullRequest
-    participant_comments_count: dict[User, int] = field(default_factory=dict)
+    user_comment_counts: dict[User, int] = field(default_factory=dict)
 
     def add_comment(self, comment: PullRequestComment) -> None:
-        self.participant_comments_count[comment.user] = (
-            self.participant_comments_count.get(comment.user, 0) + 1
+        self.user_comment_counts[comment.user] = (
+            self.user_comment_counts.get(comment.user, 0) + 1
         )

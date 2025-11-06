@@ -39,16 +39,16 @@ class TestPullRequestAnalyzer:
         analyzer = PullRequestAnalyzer(github_client=github_client)
 
         # Act
-        metrics = analyzer.analyze_pull_request(pull_request_url)
+        analysis = analyzer.analyze_pull_request(pull_request_url)
 
         # Assert
         github_client.get_pr.assert_called_once_with(pull_request_url)
         github_client.get_pr_comments.assert_called_once_with(pull_request_url)
 
-        assert metrics.pull_request == pull_request
-        assert len(metrics.participant_comments_count) == 2
-        assert metrics.participant_comments_count[User("commenter1")] == 2
-        assert metrics.participant_comments_count[User("commenter2")] == 1
+        assert analysis.pull_request == pull_request
+        assert len(analysis.user_comment_counts) == 2
+        assert analysis.user_comment_counts[User("commenter1")] == 2
+        assert analysis.user_comment_counts[User("commenter2")] == 1
 
     def test_analyze_pull_requests_should_succeed(self) -> None:
         # Arrange
@@ -89,17 +89,17 @@ class TestPullRequestAnalyzer:
         pull_request_urls = [pr_url1, pr_url2]
 
         # Act
-        all_metrics = analyzer.analyze_pull_requests(pull_request_urls)
+        all_analysis = analyzer.analyze_pull_requests(pull_request_urls)
 
         # Assert
-        assert len(all_metrics) == 2
+        assert len(all_analysis) == 2
 
-        metrics1 = all_metrics[0]
-        assert metrics1.pull_request == pr1
-        assert sum(metrics1.participant_comments_count.values()) == 1
-        assert metrics1.participant_comments_count[User("c1")] == 1
+        analysis1 = all_analysis[0]
+        assert analysis1.pull_request == pr1
+        assert sum(analysis1.user_comment_counts.values()) == 1
+        assert analysis1.user_comment_counts[User("c1")] == 1
 
-        metrics2 = all_metrics[1]
-        assert metrics2.pull_request == pr2
-        assert sum(metrics2.participant_comments_count.values()) == 2
-        assert metrics2.participant_comments_count[User("c2")] == 2
+        analysis2 = all_analysis[1]
+        assert analysis2.pull_request == pr2
+        assert sum(analysis2.user_comment_counts.values()) == 2
+        assert analysis2.user_comment_counts[User("c2")] == 2

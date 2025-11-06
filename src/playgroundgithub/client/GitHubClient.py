@@ -14,7 +14,7 @@ from playgroundgithub.domain.User import User
 @dataclass(frozen=True)
 class Configuration:
     """
-    Configuration for the GitHub client.
+    GitHub Personal Access Token (PAT)
     """
     github_pat: str
 
@@ -61,9 +61,6 @@ class GitHubClient:
         return comments
 
     def close(self) -> None:
-        """
-        Closes the client.
-        """
         self.client.close()
 
     def _get_pull_request(self, pull_request_url: PullRequestUrl) -> GithubPullRequest:

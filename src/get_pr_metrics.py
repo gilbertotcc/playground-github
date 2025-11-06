@@ -18,10 +18,10 @@ def main() -> None:
     metrics = analyzer.analyze_pull_request(pull_request_url)
 
     print(f"Metrics for pull request: {metrics.pull_request.title}")
-    print(f"Author: {metrics.pull_request.author.login_name}")
+    print(f"Author: {metrics.pull_request.author.name}")
     print("Participant comment counts:")
-    for user, count in metrics.participant_comments_count.items():
-        print(f"  - {user.login_name}: {count}")
+    for user, count in metrics.user_comment_counts.items():
+        print(f"  - {user.name}: {count}")
 
     client.close()
 
