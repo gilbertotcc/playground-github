@@ -1,5 +1,14 @@
 import re
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from datetime import datetime
+
+    from playgroundgithub.domain import User
+
+
 
 PR_URL_TEMPLATE = re.compile(r"^https://github.com/([^/]+)/([^/]+)/pull/([0-9]+)$")
 
@@ -15,6 +24,10 @@ class PullRequestUrl:
             raise ValueError(f"Invalid pull request URL {self.url}")
         object.__setattr__(self, "_match", match)
 
+    @classmethod
+    def from_url(cls, url: str) -> PullRequestUrl:
+        return cls(url)
+
     @property
     def owner(self) -> str:
         return self._match.group(1)
@@ -28,5 +41,16 @@ class PullRequestUrl:
         return int(self._match.group(3))
 
 
-def pull_request_from_url(url: str) -> PullRequestUrl:
-    return PullRequestUrl(url)
+@dataclass(frozen=True)
+class PullRequestComment:
+    user: User
+    url: str
+    updated_at: datetime
+
+
+@dataclass(frozen=True)
+class PullRequest:
+    url: PullRequestUrl
+    title: str
+    author: User
+    created_at: datetime

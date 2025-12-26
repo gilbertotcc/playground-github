@@ -1,12 +1,12 @@
 import pytest
 
-from playgroundgithub.domain.PullRequestUrl import pull_request_from_url
+from playgroundgithub.domain import PullRequestUrl
 
 
 def test_from_url_should_succeed() -> None:
     url = "https://github.com/gilbertotcc/playground-bluetooth/pull/1"
 
-    pull_request_url = pull_request_from_url(url)
+    pull_request_url = PullRequestUrl.from_url(url)
 
     assert pull_request_url.owner == "gilbertotcc"
     assert pull_request_url.repository == "playground-bluetooth"
@@ -16,6 +16,6 @@ def test_from_url_should_fail() -> None:
     url = "https://github.com/..."
 
     with pytest.raises(ValueError) as exception_info:
-        pull_request_from_url(url)
+        PullRequestUrl.from_url(url)
 
     assert "Invalid pull request URL " in str(exception_info.value)

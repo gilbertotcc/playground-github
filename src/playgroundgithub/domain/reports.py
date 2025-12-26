@@ -1,8 +1,9 @@
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
 
-from playgroundgithub.domain.PullRequest import PullRequest
-from playgroundgithub.domain.PullRequestComment import PullRequestComment
-from playgroundgithub.domain.User import User
+
+if TYPE_CHECKING:
+    from playgroundgithub.domain import PullRequest, PullRequestComment, User
 
 
 @dataclass

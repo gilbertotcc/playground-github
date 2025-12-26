@@ -1,11 +1,8 @@
 from datetime import datetime
 from unittest.mock import MagicMock
 
-from playgroundgithub.domain.PullRequest import PullRequest
-from playgroundgithub.domain.PullRequestComment import PullRequestComment
-from playgroundgithub.domain.PullRequestUrl import PullRequestUrl, pull_request_from_url
-from playgroundgithub.domain.User import User
-from playgroundgithub.service.PullRequestAnalyzer import PullRequestAnalyzer
+from playgroundgithub.domain import PullRequest, PullRequestComment, PullRequestUrl, User
+from playgroundgithub.service.pull_request_analyzer import PullRequestAnalyzer
 
 
 def create_pull_request_comment(user: str, url: str) -> PullRequestComment:
@@ -19,7 +16,7 @@ class TestPullRequestAnalyzer:
     def test_analyze_pull_request_should_succeed(self) -> None:
         # Arrange
         github_client = MagicMock()
-        pull_request_url = pull_request_from_url("https://github.com/owner/repo/pull/1")
+        pull_request_url = PullRequestUrl.from_url("https://github.com/owner/repo/pull/1")
 
         pull_request = PullRequest(
             url=pull_request_url,
@@ -54,11 +51,11 @@ class TestPullRequestAnalyzer:
         # Arrange
         github_client = MagicMock()
 
-        pr_url1 = pull_request_from_url("https://github.com/owner/repo/pull/1")
+        pr_url1 = PullRequestUrl.from_url("https://github.com/owner/repo/pull/1")
         pr1 = PullRequest(pr_url1, "PR 1", User("author1", type="User"), datetime.now())
         comments1 = [create_pull_request_comment("c1", "u1")]
 
-        pr_url2 = pull_request_from_url("https://github.com/owner/repo/pull/2")
+        pr_url2 = PullRequestUrl.from_url("https://github.com/owner/repo/pull/2")
         pr2 = PullRequest(pr_url2, "PR 2", User("author2", type="User"), datetime.now())
         comments2 = [
             create_pull_request_comment("c2", "u2"),
@@ -75,7 +72,7 @@ class TestPullRequestAnalyzer:
         def get_pr_comments_side_effect(
                 pull_request_url: PullRequestUrl
             ) -> list[PullRequestComment]:
-            
+
             if pull_request_url == pr_url1:
                 return comments1
             if pull_request_url == pr_url2:

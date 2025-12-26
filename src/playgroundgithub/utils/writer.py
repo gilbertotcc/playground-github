@@ -1,16 +1,18 @@
 import csv
 import io
-
-from playgroundgithub.domain.PullRequestAnalysis import PullRequestAnalysis
-from playgroundgithub.domain.User import User
+from typing import TYPE_CHECKING
 
 
-def csv_repport_of(pull_request_analysis: list[PullRequestAnalysis]) -> str:
+if TYPE_CHECKING:
+    from playgroundgithub.domain import PullRequestAnalysis, User
+
+
+def csv_report_of(pull_request_analysis: list[PullRequestAnalysis]) -> str:
     unique_participants: set[User] = set()
     for pr_analysis in pull_request_analysis:
         unique_participants.update(pr_analysis.human_comment_counts.keys())
 
-    sorted_participants = sorted(list(unique_participants), key=lambda u: u.name)
+    sorted_participants = sorted(unique_participants, key=lambda u: u.name)
 
     header = [
         "Pull Request URL",

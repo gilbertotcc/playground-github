@@ -2,15 +2,16 @@ import os
 
 from dotenv import load_dotenv
 
-from playgroundgithub.client.GitHubClient import Configuration, create_github_client
-from playgroundgithub.domain.PullRequestUrl import pull_request_from_url
+from playgroundgithub.client.client import Configuration, create_github_client
+from playgroundgithub.domain import PullRequestUrl
+
 
 load_dotenv()
 
 def main() -> None:
     configuration = Configuration(os.getenv("GITHUB_TOKEN") or "")
     client = create_github_client(configuration)
-    pull_request_url = pull_request_from_url("https://github.com/totmoney/docs-parser/pull/2")
+    pull_request_url = PullRequestUrl.from_url("https://github.com/totmoney/docs-parser/pull/2")
 
     pull_request = client.get_pr(pull_request_url)
     print(

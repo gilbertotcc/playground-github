@@ -12,21 +12,23 @@ request information.
 
 The project is structured into two main parts:
 
-* **`src/get_comments.py`**: An example script that demonstrates how to use the
-  `GitHubClient` to fetch comments for a pull request.
+* An example script that demonstrates how to use the
+    `GitHubClient` to fetch comments for a pull request.
 * **`src/playgroundgithub`**: The main application package, containing the
-  following modules:
+    following modules:
   * **`client`**: Contains the `GitHubClient` for interacting with the GitHub
-    API.
+        API.
   * **`domain`**: Defines the data models for the application, such as
-    `PullRequest`, `PullRequestComment`, `PullRequestAnalysis`,
-    `PullRequestUrl`, and `User`.
+        `PullRequest`, `PullRequestComment`, `PullRequestAnalysis`,
+        `PullRequestUrl`, and `User`.
   * **`service`**: Contains the business logic of the application.
   * **`utils`**: Contains utility functions.
 
-## Building and Running
+## Development Environment
 
-The project uses `uv` for package management.
+The project uses `uv` for package management and is configured to use Python
+`3.13` for type checking and `3.14` for linting. This is defined in the
+`mypy.ini` and `ruff.toml` files, respectively.
 
 To install dependencies:
 
@@ -42,8 +44,8 @@ python src/get_comments.py
 
 ## Development Conventions
 
-The project uses f-strings for string formatting and type hints for static
-analysis.
+The project uses f-strings for string formatting, double quotes for strings, and
+type hints for static analysis.
 Domain models are implemented as dataclasses.
 
 After making any changes, please run the quality checks to ensure the code is
@@ -81,16 +83,16 @@ markdownlint-cli2 --fix <filename>
 The project follows a simple architecture:
 
 * **Domain Objects**: The `domain` package contains plain old Python objects
-  (POPOs) that represent the application's data models. These objects are
-  immutable (where appropriate) and have no knowledge of how they are persisted
-  or retrieved.
+    (POPOs) that represent the application's data models. These objects are
+    immutable (where appropriate) and have no knowledge of how they are persisted
+    or retrieved.
 * **Client**: The `client` package contains the `GitHubClient`, which is
-  responsible for interacting with the GitHub API. It takes domain objects as
-  input and returns domain objects as output. This separation of concerns
-  makes the application easier to test and maintain.
+    responsible for interacting with the GitHub API. It takes domain objects as
+    input and returns domain objects as output. This separation of concerns
+    makes the application easier to test and maintain.
 * **Service**: The `service` package contains the `PullRequestAnalyzer`, which
-  is responsible for analyzing pull requests and generating metrics.
+    is responsible for analyzing pull requests and generating metrics.
 * **Scripts**: The `src` directory contains scripts that use the `client` and
-  `domain` packages to implement the application's functionality.
+    `domain` packages to implement the application's functionality.
 * **Utils**: The `utils` package contains utility functions for reading and
-  writing files.
+    writing files.
