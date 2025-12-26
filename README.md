@@ -95,6 +95,17 @@ markdownlint-cli2 --fix <filename>
 
 ---
 
+## Implementation notes
+
+There are different types of comments as described in this page:
+<https://docs.github.com/en/rest/guides/working-with-comments?apiVersion=2022-11-28>:
+
+* Pull request comments
+* Pull request comments on a line
+* Commit comments
+
+---
+
 ## Outdated content
 
 The project uses

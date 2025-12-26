@@ -20,8 +20,8 @@ def main() -> None:
     print(f"Metrics for pull request: {metrics.pull_request.title}")
     print(f"Author: {metrics.pull_request.author.name}")
     print("Participant comment counts:")
-    for user, count in metrics.user_comment_counts.items():
-        print(f"  - {user.name}: {count}")
+    for user, count in metrics.human_comment_counts.items():
+        print(f"  - {user}: {count}")
 
     client.close()
 

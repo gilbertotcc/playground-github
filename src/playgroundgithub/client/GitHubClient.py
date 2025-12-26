@@ -75,7 +75,7 @@ class GitHubClient:
         return PullRequest(
             url=pull_request_url,
             title=pull_request.title,
-            author=User(pull_request.user.login),
+            author=User(name=pull_request.user.login, type=pull_request.user.type),
             created_at=pull_request.created_at,
         )
 
@@ -84,7 +84,7 @@ class GitHubClient:
         pr_comment: GithubPullRequestComment | GithubIssueComment
     ) -> PullRequestComment:
         return PullRequestComment(
-            user=User(pr_comment.user.login),
+            user=User(pr_comment.user.login, type=pr_comment.user.type),
             url=pr_comment.html_url,
             updated_at=pr_comment.updated_at,
         )
