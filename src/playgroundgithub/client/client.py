@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
@@ -5,17 +7,16 @@ from typing import TYPE_CHECKING
 from dotenv import load_dotenv
 from github import Auth, Github
 
-from playgroundgithub.client.mapping import raw_comment_to_comment, raw_issue_to_pull_request
-from playgroundgithub.domain import (
-    PullRequest,
-    PullRequestComment,
-    PullRequestUrl,
-    User,
+from playgroundgithub.client.mapping import (
+    raw_comment_to_comment,
+    raw_issue_to_pull_request,
+    raw_pull_request_to_pull_request,
 )
 
 
 if TYPE_CHECKING:
-    from github.PullRequest import PullRequest as GitHubPullRequest
+    from playgroundgithub.domain import PullRequest, PullRequestComment, PullRequestUrl
+
 
 @dataclass(frozen=True)
 class Configuration:
@@ -68,7 +69,7 @@ class GitHubClient:
         raw_pull_request = (self
                             .client.get_repo(f"{url.owner}/{url.repository}")
                             .get_pull(url.number))
-        return self._to_pull_request(raw_pull_request, url)
+        return raw_pull_request_to_pull_request(raw_pull_request)
 
     def get_pull_request_comments_of(
             self,
@@ -100,14 +101,3 @@ class GitHubClient:
 
     def close(self) -> None:
         self.client.close()
-
-    @staticmethod
-    def _to_pull_request(
-        pull_request: GitHubPullRequest, pull_request_url: PullRequestUrl
-    ) -> PullRequest:
-        return PullRequest(
-            url=pull_request_url,
-            title=pull_request.title,
-            author=User(name=pull_request.user.login, type=pull_request.user.type),
-            created_at=pull_request.created_at,
-        )
