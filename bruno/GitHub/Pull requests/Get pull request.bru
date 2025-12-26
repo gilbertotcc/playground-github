@@ -1,0 +1,21 @@
+meta {
+  name: Get pull request
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://api.github.com/repos/:owner/:repo/pulls
+  body: none
+  auth: inherit
+}
+
+params:path {
+  owner: {{owner}}
+  repo: 
+}
+
+settings {
+  encodeUrl: false
+  timeout: 0
+}

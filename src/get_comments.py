@@ -1,4 +1,3 @@
-import os
 
 from dotenv import load_dotenv
 
@@ -10,11 +9,12 @@ load_dotenv()
 
 
 def main() -> None:
-    configuration = Configuration(os.getenv("GITHUB_TOKEN") or "")
-    client = create_github_client(configuration)
-    pull_request = PullRequestUrl("https://github.com/totmoney/docs-parser/pull/2")
+    client = create_github_client(Configuration.load())
+    pull_request = client.get_pull_request_from(
+        PullRequestUrl("https://github.com/totmoney/docs-parser/pull/2")
+    )
 
-    comments = client.get_pr_comments(pull_request)
+    comments = client.get_pull_request_comments_of(pull_request)
     counter: int = 0
     for comment in comments:
         counter = counter + 1

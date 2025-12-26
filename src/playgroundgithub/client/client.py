@@ -1,18 +1,17 @@
+import os
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
 
+from dotenv import load_dotenv
 from github import Auth, Github
+from github.PullRequest import PullRequest as GitHubPullRequest  # noqa: TC002
 
-from playgroundgithub.domain import PullRequest, PullRequestComment, User
-
-
-if TYPE_CHECKING:
-    from github.IssueComment import IssueComment as GithubIssueComment
-    from github.PullRequest import PullRequest as GithubPullRequest
-    from github.PullRequestComment import PullRequestComment as GithubPullRequestComment
-
-    from playgroundgithub.domain import PullRequestUrl
-
+from playgroundgithub.client.mapping import raw_comment_to_comment
+from playgroundgithub.domain import (
+    PullRequest,
+    PullRequestComment,
+    PullRequestUrl,
+    User,
+)
 
 
 @dataclass(frozen=True)
@@ -21,6 +20,18 @@ class Configuration:
     GitHub Personal Access Token (PAT)
     """
     github_pat: str
+
+    @classmethod
+    def load(cls) -> Configuration:
+        load_dotenv()
+
+        github_pat = os.getenv("GITHUB_TOKEN")
+
+        if github_pat is None:
+            raise RuntimeError("GITHUB_TOKEN environment variable not set")
+
+        return cls(github_pat)
+
 
 
 class GitHubClient:
@@ -32,65 +43,58 @@ class GitHubClient:
     def __init__(self, client: Github):
         self.client = client
 
-    def get_pr(self, pull_request_url: PullRequestUrl) -> PullRequest:
+    def get_pull_request_from(self, url: PullRequestUrl) -> PullRequest:
         """
         Gets a pull request.
 
-        :param pull_request_url: The URL of the pull request.
+        :param url: The URL of the pull request.
         :return: The pull request.
         """
-        pull_request = self._get_pull_request(pull_request_url)
-        return self._to_pull_request(pull_request, pull_request_url)
+        raw_pull_request = (self
+                            .client.get_repo(f"{url.owner}/{url.repository}")
+                            .get_pull(url.number))
+        return self._to_pull_request(raw_pull_request, url)
 
-    def get_pr_comments(
-        self, pull_request_url: PullRequestUrl
+    def get_pull_request_comments_of(
+            self,
+            pull_request: PullRequest
     ) -> list[PullRequestComment]:
         """
         Gets the comments of a pull request.
 
-        :param pull_request_url: The URL of the pull request.
+        The method returns both issue and review comments in an unified format.
+
+        :param pull_request: The pull request.
         :return: The comments of the pull request.
         """
-        pull_request = self._get_pull_request(pull_request_url)
-        review_comments = pull_request.get_review_comments()
+        raw_repository = self.client.get_repo(
+            f"{pull_request.url.owner}/{pull_request.url.repository}"
+        )
 
-        issue = self.client.get_repo(
-            f"{pull_request_url.owner}/{pull_request_url.repository}"
-        ).get_issue(pull_request_url.number)
-        issue_comments = issue.get_comments()
+        raw_pull_request = raw_repository.get_pull(pull_request.url.number)
+        raw_pull_reqeust_comments = raw_pull_request.get_review_comments()
 
-        comments = [self._to_comment(comment) for comment in review_comments]
-        comments.extend([self._to_comment(comment) for comment in issue_comments])
+        raw_issue_comments = (raw_repository
+                              .get_issue(pull_request.url.number)
+                              .get_comments())
+
+        comments = [raw_comment_to_comment(comment) for comment in raw_pull_reqeust_comments]
+        comments.extend([raw_comment_to_comment(comment) for comment in raw_issue_comments])
 
         return comments
 
     def close(self) -> None:
         self.client.close()
 
-    def _get_pull_request(self, pull_request_url: PullRequestUrl) -> GithubPullRequest:
-        return self.client.get_repo(
-            f"{pull_request_url.owner}/{pull_request_url.repository}"
-        ).get_pull(pull_request_url.number)
-
     @staticmethod
     def _to_pull_request(
-        pull_request: GithubPullRequest, pull_request_url: PullRequestUrl
+        pull_request: GitHubPullRequest, pull_request_url: PullRequestUrl
     ) -> PullRequest:
         return PullRequest(
             url=pull_request_url,
             title=pull_request.title,
             author=User(name=pull_request.user.login, type=pull_request.user.type),
             created_at=pull_request.created_at,
-        )
-
-    @staticmethod
-    def _to_comment(
-        pr_comment: GithubPullRequestComment | GithubIssueComment
-    ) -> PullRequestComment:
-        return PullRequestComment(
-            user=User(pr_comment.user.login, type=pr_comment.user.type),
-            url=pr_comment.html_url,
-            updated_at=pr_comment.updated_at,
         )
 
 

@@ -1,6 +1,7 @@
 from datetime import datetime
-from unittest.mock import MagicMock
+from unittest.mock import create_autospec
 
+from playgroundgithub.client import GitHubClient
 from playgroundgithub.domain import PullRequest, PullRequestComment, PullRequestUrl, User
 from playgroundgithub.service.pull_request_analyzer import PullRequestAnalyzer
 
@@ -12,10 +13,14 @@ def create_pull_request_comment(user: str, url: str) -> PullRequestComment:
         updated_at=datetime.now(),
     )
 
+
 class TestPullRequestAnalyzer:
     def test_analyze_pull_request_should_succeed(self) -> None:
         # Arrange
-        github_client = MagicMock()
+        github_client = create_autospec(spec=GitHubClient,
+                                        spec_set=True,
+                                        instance=True)
+
         pull_request_url = PullRequestUrl("https://github.com/owner/repo/pull/1")
 
         pull_request = PullRequest(
@@ -24,14 +29,14 @@ class TestPullRequestAnalyzer:
             author=User("author", type="User"),
             created_at=datetime.now(),
         )
-        github_client.get_pr.return_value = pull_request
+        github_client.get_pull_request_from.return_value = pull_request
 
         comments = [
             create_pull_request_comment("commenter1", "url1"),
             create_pull_request_comment("commenter2", "url2"),
             create_pull_request_comment("commenter1", "url3"),
         ]
-        github_client.get_pr_comments.return_value = comments
+        github_client.get_pull_request_comments_of.return_value = comments
 
         analyzer = PullRequestAnalyzer(github_client=github_client)
 
@@ -39,8 +44,10 @@ class TestPullRequestAnalyzer:
         analysis = analyzer.analyze_pull_request(pull_request_url)
 
         # Assert
-        github_client.get_pr.assert_called_once_with(pull_request_url)
-        github_client.get_pr_comments.assert_called_once_with(pull_request_url)
+        github_client.get_pull_request_from.assert_called_once_with(pull_request_url)
+        github_client.get_pull_request_comments_of.assert_called_once_with(
+            pull_request
+        )
 
         assert analysis.pull_request == pull_request
         assert len(analysis.human_comment_counts) == 2
@@ -49,7 +56,9 @@ class TestPullRequestAnalyzer:
 
     def test_analyze_pull_requests_should_succeed(self) -> None:
         # Arrange
-        github_client = MagicMock()
+        github_client = create_autospec(spec=GitHubClient,
+                                        spec_set=True,
+                                        instance=True)
 
         pr_url1 = PullRequestUrl("https://github.com/owner/repo/pull/1")
         pr1 = PullRequest(pr_url1, "PR 1", User("author1", type="User"), datetime.now())
@@ -62,7 +71,9 @@ class TestPullRequestAnalyzer:
             create_pull_request_comment("c2", "u3"),
         ]
 
-        def get_pr_side_effect(pull_request_url: PullRequestUrl) -> PullRequest | None:
+        def get_pr_side_effect(
+            pull_request_url: PullRequestUrl,
+        ) -> PullRequest | None:
             if pull_request_url == pr_url1:
                 return pr1
             if pull_request_url == pr_url2:
@@ -70,17 +81,18 @@ class TestPullRequestAnalyzer:
             return None
 
         def get_pr_comments_side_effect(
-                pull_request_url: PullRequestUrl
-            ) -> list[PullRequestComment]:
-
-            if pull_request_url == pr_url1:
+            pull_request: PullRequest,
+        ) -> list[PullRequestComment]:
+            if pull_request == pr1:
                 return comments1
-            if pull_request_url == pr_url2:
+            if pull_request == pr2:
                 return comments2
             return []
 
-        github_client.get_pr.side_effect = get_pr_side_effect
-        github_client.get_pr_comments.side_effect = get_pr_comments_side_effect
+        github_client.get_pull_request_from.side_effect = get_pr_side_effect
+        github_client.get_pull_request_comments_of.side_effect = (
+            get_pr_comments_side_effect
+        )
 
         analyzer = PullRequestAnalyzer(github_client=github_client)
         pull_request_urls = [pr_url1, pr_url2]

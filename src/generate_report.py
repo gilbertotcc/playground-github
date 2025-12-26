@@ -1,4 +1,3 @@
-import os
 
 from dotenv import load_dotenv
 
@@ -12,8 +11,7 @@ load_dotenv()
 
 
 def main() -> None:
-    configuration = Configuration(os.getenv("GITHUB_TOKEN") or "")
-    client = create_github_client(configuration)
+    client = create_github_client(Configuration.load())
 
     pull_request_urls = load_pull_requests_from_file("develop/prs.txt")
 

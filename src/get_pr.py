@@ -1,4 +1,3 @@
-import os
 
 from dotenv import load_dotenv
 
@@ -9,11 +8,10 @@ from playgroundgithub.domain import PullRequestUrl
 load_dotenv()
 
 def main() -> None:
-    configuration = Configuration(os.getenv("GITHUB_TOKEN") or "")
-    client = create_github_client(configuration)
+    client = create_github_client(Configuration.load())
     pull_request_url = PullRequestUrl("https://github.com/totmoney/docs-parser/pull/2")
 
-    pull_request = client.get_pr(pull_request_url)
+    pull_request = client.get_pull_request_from(pull_request_url)
     print(
         f"Found pull request: {pull_request.title} by {pull_request.author}"
     )

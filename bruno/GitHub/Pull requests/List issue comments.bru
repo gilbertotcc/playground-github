@@ -1,0 +1,30 @@
+meta {
+  name: List issue comments
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://api.github.com/repos/:owner/:repo/issues/:issueNumber/comments
+  body: none
+  auth: inherit
+}
+
+params:path {
+  issueNumber: 
+  repo: 
+  owner: {{owner}}
+}
+
+settings {
+  encodeUrl: false
+  timeout: 0
+}
+
+docs {
+  > You can use the REST API to create and manage comments on issues and pull requests. Every pull request is an issue, but not every issue is a pull request. For this reason, "shared" actions for both features, […]
+  
+  From [REST API endpoints for issue comments](https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28). (Last access: 2025-12-26)
+  
+  In pull requests, issue comments are not tied to specific parts of the code; instead, they are tied to the overall pull request.
+}
