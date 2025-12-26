@@ -27,10 +27,10 @@ class PullRequestAnalyzer:
             self, pull_request_url: PullRequestUrl
         ) -> PullRequestAnalysis:
 
-        pull_request = self.github_client.get_pr(pull_request_url)
+        pull_request = self.github_client.get_pull_request_from(pull_request_url)
         analysis = PullRequestAnalysis(pull_request=pull_request)
 
-        comments = self.github_client.get_pr_comments(pull_request_url)
+        comments = self.github_client.get_pull_request_comments_of(pull_request)
         for comment in comments:
             analysis.add_comment(comment)
 

@@ -1,4 +1,3 @@
-import os
 
 from dotenv import load_dotenv
 
@@ -10,8 +9,7 @@ from playgroundgithub.service.pull_request_analyzer import PullRequestAnalyzer
 load_dotenv()
 
 def main() -> None:
-    configuration = Configuration(os.getenv("GITHUB_TOKEN") or "")
-    client = create_github_client(configuration)
+    client = create_github_client(Configuration.load())
     analyzer = PullRequestAnalyzer(client)
 
     pull_request_url = PullRequestUrl("https://github.com/totmoney/docs-parser/pull/2")

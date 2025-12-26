@@ -1,0 +1,28 @@
+meta {
+  name: Get pull request review comments
+  type: http
+  seq: 2
+}
+
+get {
+  url: https://api.github.com/repos/:owner/:repo/pulls/:pullNumber/comments
+  body: none
+  auth: inherit
+}
+
+params:path {
+  owner: {{owner}}
+  pullNumber: 
+  repo: 
+}
+
+settings {
+  encodeUrl: false
+  timeout: 0
+}
+
+docs {
+  > Pull request review comments are comments made on a portion of the unified diff during a pull request review.
+  
+  From [REST API endpoints for pull request review comments](https://docs.github.com/en/rest/pulls/comments?apiVersion=2022-11-28). (Last access: 2025-12-26)
+}
