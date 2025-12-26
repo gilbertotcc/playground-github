@@ -13,15 +13,15 @@ class TestPullRequestAnalysis:
         pull_request = PullRequest(
             url=pull_request_url,
             title="Test Title",
-            author=User("author"),
+            author=User("author", type="User"),
             created_at=datetime.now(),
         )
         metrics = PullRequestAnalysis(pull_request=pull_request)
         comment = PullRequestComment(
-            User("commenter"),
+            User("commenter", type="User"),
             "https://github.com/owner/repo/pull/1#issuecomment-1", datetime.now()
         )
 
         metrics.add_comment(comment)
 
-        assert metrics.user_comment_counts[User("commenter")] == 1
+        assert metrics.human_comment_counts[User("commenter", type="User")] == 1
