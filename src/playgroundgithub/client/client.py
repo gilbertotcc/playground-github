@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from github import Auth, Github
 from github.PullRequest import PullRequest as GitHubPullRequest  # noqa: TC002
 
-from playgroundgithub.client.mapping import raw_comment_to_comment
+from playgroundgithub.client.mapping import raw_comment_to_comment, raw_issue_to_pull_request
 from playgroundgithub.domain import (
     PullRequest,
     PullRequestComment,
@@ -42,6 +42,12 @@ class GitHubClient:
 
     def __init__(self, client: Github):
         self.client = client
+
+    def search_pull_requests(self, query_string: str) -> list[PullRequest]:
+        query = query_string if "is:pr" in query_string else f"{query_string} is:pr"
+        raw_pull_requests = self.client.search_issues(query=query)
+
+        return [raw_issue_to_pull_request(raw_pull_request) for raw_pull_request in raw_pull_requests]
 
     def get_pull_request_from(self, url: PullRequestUrl) -> PullRequest:
         """
