@@ -11,7 +11,7 @@ load_dotenv()
 def main() -> None:
     configuration = Configuration(os.getenv("GITHUB_TOKEN") or "")
     client = create_github_client(configuration)
-    pull_request_url = PullRequestUrl.from_url("https://github.com/totmoney/docs-parser/pull/2")
+    pull_request_url = PullRequestUrl("https://github.com/totmoney/docs-parser/pull/2")
 
     pull_request = client.get_pr(pull_request_url)
     print(

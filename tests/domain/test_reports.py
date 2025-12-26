@@ -6,7 +6,7 @@ from playgroundgithub.domain.reports import PullRequestAnalysis
 
 class TestPullRequestAnalysis:
     def test_add_comment_should_succeed(self) -> None:
-        pull_request_url = PullRequestUrl.from_url("https://github.com/owner/repo/pull/1")
+        pull_request_url = PullRequestUrl("https://github.com/owner/repo/pull/1")
         pull_request = PullRequest(
             url=pull_request_url,
             title="Test Title",

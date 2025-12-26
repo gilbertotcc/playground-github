@@ -14,7 +14,7 @@ def main() -> None:
     client = create_github_client(configuration)
     analyzer = PullRequestAnalyzer(client)
 
-    pull_request_url = PullRequestUrl.from_url("https://github.com/totmoney/docs-parser/pull/2")
+    pull_request_url = PullRequestUrl("https://github.com/totmoney/docs-parser/pull/2")
 
     metrics = analyzer.analyze_pull_request(pull_request_url)
 

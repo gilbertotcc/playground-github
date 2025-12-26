@@ -24,10 +24,6 @@ class PullRequestUrl:
             raise ValueError(f"Invalid pull request URL {self.url}")
         object.__setattr__(self, "_match", match)
 
-    @classmethod
-    def from_url(cls, url: str) -> PullRequestUrl:
-        return cls(url)
-
     @property
     def owner(self) -> str:
         return self._match.group(1)
