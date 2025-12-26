@@ -1,8 +1,11 @@
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
-from playgroundgithub.client.GitHubClient import GitHubClient
-from playgroundgithub.domain.PullRequestAnalysis import PullRequestAnalysis
-from playgroundgithub.domain.PullRequestUrl import PullRequestUrl
+from playgroundgithub.domain import PullRequestAnalysis, PullRequestUrl
+
+
+if TYPE_CHECKING:
+    from playgroundgithub.client.client import GitHubClient
 
 
 @dataclass

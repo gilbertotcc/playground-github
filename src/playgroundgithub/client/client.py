@@ -1,14 +1,18 @@
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from github import Auth, Github
-from github.IssueComment import IssueComment as GithubIssueComment
-from github.PullRequest import PullRequest as GithubPullRequest
-from github.PullRequestComment import PullRequestComment as GithubPullRequestComment
 
-from playgroundgithub.domain.PullRequest import PullRequest
-from playgroundgithub.domain.PullRequestComment import PullRequestComment
-from playgroundgithub.domain.PullRequestUrl import PullRequestUrl
-from playgroundgithub.domain.User import User
+from playgroundgithub.domain import PullRequest, PullRequestComment, User
+
+
+if TYPE_CHECKING:
+    from github.IssueComment import IssueComment as GithubIssueComment
+    from github.PullRequest import PullRequest as GithubPullRequest
+    from github.PullRequestComment import PullRequestComment as GithubPullRequestComment
+
+    from playgroundgithub.domain import PullRequestUrl
+
 
 
 @dataclass(frozen=True)

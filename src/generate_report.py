@@ -2,10 +2,10 @@ import os
 
 from dotenv import load_dotenv
 
-from playgroundgithub.client.GitHubClient import Configuration, create_github_client
-from playgroundgithub.service.PullRequestAnalyzer import PullRequestAnalyzer
+from playgroundgithub.client.client import Configuration, create_github_client
+from playgroundgithub.service.pull_request_analyzer import PullRequestAnalyzer
 from playgroundgithub.utils.reader import load_pull_requests_from_file
-from playgroundgithub.utils.writer import csv_repport_of
+from playgroundgithub.utils.writer import csv_report_of
 
 
 load_dotenv()
@@ -20,7 +20,7 @@ def main() -> None:
     analyzer = PullRequestAnalyzer(client)
     metrics = analyzer.analyze_pull_requests(pull_request_urls)
 
-    report = csv_repport_of(metrics)
+    report = csv_report_of(metrics)
 
     print(report)
 
