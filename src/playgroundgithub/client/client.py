@@ -1,9 +1,9 @@
 import os
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from dotenv import load_dotenv
 from github import Auth, Github
-from github.PullRequest import PullRequest as GitHubPullRequest  # noqa: TC002
 
 from playgroundgithub.client.mapping import raw_comment_to_comment, raw_issue_to_pull_request
 from playgroundgithub.domain import (
@@ -13,6 +13,9 @@ from playgroundgithub.domain import (
     User,
 )
 
+
+if TYPE_CHECKING:
+    from github.PullRequest import PullRequest as GitHubPullRequest
 
 @dataclass(frozen=True)
 class Configuration:
@@ -43,6 +46,12 @@ class GitHubClient:
     def __init__(self, client: Github):
         self.client = client
 
+    @classmethod
+    def new_client(cls, configuration: Configuration) -> GitHubClient:
+        auth_token = Auth.Token(configuration.github_pat)
+        client = Github(auth=auth_token)
+        return cls(client)
+
     def search_pull_requests(self, query_string: str) -> list[PullRequest]:
         query = query_string if "is:pr" in query_string else f"{query_string} is:pr"
         raw_pull_requests = self.client.search_issues(query=query)
@@ -68,7 +77,7 @@ class GitHubClient:
         """
         Gets the comments of a pull request.
 
-        The method returns both issue and review comments in an unified format.
+        The method returns both issue and review comments in a unified format.
 
         :param pull_request: The pull request.
         :return: The comments of the pull request.
@@ -102,15 +111,3 @@ class GitHubClient:
             author=User(name=pull_request.user.login, type=pull_request.user.type),
             created_at=pull_request.created_at,
         )
-
-
-def create_github_client(configuration: Configuration) -> GitHubClient:
-    """
-    Creates a GitHub client.
-
-    :param configuration: The configuration for the client.
-    :return: The GitHub client.
-    """
-    auth_token = Auth.Token(configuration.github_pat)
-    client = Github(auth=auth_token)
-    return GitHubClient(client)
