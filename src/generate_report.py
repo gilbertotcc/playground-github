@@ -7,6 +7,7 @@ from playgroundgithub.service.PullRequestAnalyzer import PullRequestAnalyzer
 from playgroundgithub.utils.reader import load_pull_requests_from_file
 from playgroundgithub.utils.writer import csv_repport_of
 
+
 load_dotenv()
 
 

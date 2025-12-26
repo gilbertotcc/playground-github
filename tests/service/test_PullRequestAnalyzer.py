@@ -75,7 +75,7 @@ class TestPullRequestAnalyzer:
         def get_pr_comments_side_effect(
                 pull_request_url: PullRequestUrl
             ) -> list[PullRequestComment]:
-            
+
             if pull_request_url == pr_url1:
                 return comments1
             if pull_request_url == pr_url2:

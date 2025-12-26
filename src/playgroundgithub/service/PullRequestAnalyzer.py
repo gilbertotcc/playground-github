@@ -12,14 +12,14 @@ class PullRequestAnalyzer:
     def analyze_pull_requests(
             self, pull_request_urls: list[PullRequestUrl]
         ) -> list[PullRequestAnalysis]:
-        
+
         all_analysis = []
         for pull_request_url in pull_request_urls:
             pr_analysis = self.analyze_pull_request(pull_request_url)
             all_analysis.append(pr_analysis)
 
         return all_analysis
-  
+
     def analyze_pull_request(
             self, pull_request_url: PullRequestUrl
         ) -> PullRequestAnalysis:

@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from playgroundgithub.client.GitHubClient import Configuration, create_github_client
 from playgroundgithub.domain.PullRequestUrl import pull_request_from_url
 
+
 load_dotenv()
 
 

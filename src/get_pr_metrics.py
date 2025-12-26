@@ -6,6 +6,7 @@ from playgroundgithub.client.GitHubClient import Configuration, create_github_cl
 from playgroundgithub.domain.PullRequestUrl import pull_request_from_url
 from playgroundgithub.service.PullRequestAnalyzer import PullRequestAnalyzer
 
+
 load_dotenv()
 
 def main() -> None:
