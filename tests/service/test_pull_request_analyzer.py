@@ -16,7 +16,7 @@ class TestPullRequestAnalyzer:
     def test_analyze_pull_request_should_succeed(self) -> None:
         # Arrange
         github_client = MagicMock()
-        pull_request_url = PullRequestUrl.from_url("https://github.com/owner/repo/pull/1")
+        pull_request_url = PullRequestUrl("https://github.com/owner/repo/pull/1")
 
         pull_request = PullRequest(
             url=pull_request_url,
@@ -51,11 +51,11 @@ class TestPullRequestAnalyzer:
         # Arrange
         github_client = MagicMock()
 
-        pr_url1 = PullRequestUrl.from_url("https://github.com/owner/repo/pull/1")
+        pr_url1 = PullRequestUrl("https://github.com/owner/repo/pull/1")
         pr1 = PullRequest(pr_url1, "PR 1", User("author1", type="User"), datetime.now())
         comments1 = [create_pull_request_comment("c1", "u1")]
 
-        pr_url2 = PullRequestUrl.from_url("https://github.com/owner/repo/pull/2")
+        pr_url2 = PullRequestUrl("https://github.com/owner/repo/pull/2")
         pr2 = PullRequest(pr_url2, "PR 2", User("author2", type="User"), datetime.now())
         comments2 = [
             create_pull_request_comment("c2", "u2"),
