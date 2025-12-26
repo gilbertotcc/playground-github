@@ -25,7 +25,15 @@ them in a `.env` file.
 
 ## Run
 
-TODO
+To search for pull requests, use the `src/get_prs.py` script.
+It takes a query as a command-line argument and prints the URLs of the found
+pull requests.
+
+For example:
+
+```sh
+uv run python src/get_prs.py "is:pr is:open author:gilbertotcc"
+```
 
 ## Development
 
