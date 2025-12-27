@@ -1,15 +1,17 @@
 
 from dotenv import load_dotenv
 
-from playgroundgithub.client.client import Configuration, create_github_client
+from playgroundgithub.client import GitHubClient
+from playgroundgithub.client.client import Configuration
 from playgroundgithub.domain import PullRequestUrl
+from playgroundgithub.utils.logging import setup_logging
 
 
 load_dotenv()
 
 
 def main() -> None:
-    client = create_github_client(Configuration.load())
+    client = GitHubClient.new_client(Configuration.load())
     pull_request = client.get_pull_request_from(
         PullRequestUrl("https://github.com/totmoney/docs-parser/pull/2")
     )
@@ -23,4 +25,5 @@ def main() -> None:
     client.close()
 
 if __name__ == "__main__":
+    setup_logging()
     main()

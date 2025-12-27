@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import os
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
@@ -39,10 +40,10 @@ class Configuration:
 
 
 class GitHubClient:
-    """
-    A client for interacting with the GitHub API.
-    """
+
     client: Github
+
+    log = logging.getLogger(__name__)
 
     def __init__(self, client: Github):
         self.client = client
@@ -56,8 +57,12 @@ class GitHubClient:
     def search_pull_requests(self, query_string: str) -> list[PullRequest]:
         query = query_string if "is:pr" in query_string else f"{query_string} is:pr"
         raw_pull_requests = self.client.search_issues(query=query)
-
-        return [raw_issue_to_pull_request(raw_pull_request) for raw_pull_request in raw_pull_requests]
+        pull_requests = [
+            raw_issue_to_pull_request(raw_pull_request) for raw_pull_request in raw_pull_requests
+        ]
+        self.log.info("Found %d pull requests with query string '%s'",
+                      len(pull_requests), query_string)
+        return pull_requests
 
     def get_pull_request_from(self, url: PullRequestUrl) -> PullRequest:
         """
@@ -69,7 +74,9 @@ class GitHubClient:
         raw_pull_request = (self
                             .client.get_repo(f"{url.owner}/{url.repository}")
                             .get_pull(url.number))
-        return raw_pull_request_to_pull_request(raw_pull_request)
+        pull_request = raw_pull_request_to_pull_request(raw_pull_request)
+        self.log.info("Get pull request %s", url.url)
+        return pull_request
 
     def get_pull_request_comments_of(
             self,
@@ -96,7 +103,7 @@ class GitHubClient:
 
         comments = [raw_comment_to_comment(comment) for comment in raw_pull_reqeust_comments]
         comments.extend([raw_comment_to_comment(comment) for comment in raw_issue_comments])
-
+        self.log.info("Found %d comments on pull request %s", len(comments), pull_request.url.url)
         return comments
 
     def close(self) -> None:
