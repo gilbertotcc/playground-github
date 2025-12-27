@@ -3,9 +3,8 @@ from dotenv import load_dotenv
 
 from playgroundgithub.client import GitHubClient
 from playgroundgithub.client.client import Configuration
-from playgroundgithub.service.pull_request_analyzer import PullRequestAnalyzer
+from playgroundgithub.reports.report_comments import CommentsReportCreator
 from playgroundgithub.utils.reader import load_pull_requests_from_file
-from playgroundgithub.utils.writer import csv_report_of
 
 
 load_dotenv()
@@ -14,14 +13,12 @@ load_dotenv()
 def main() -> None:
     client = GitHubClient.new_client(Configuration.load())
 
-    pull_request_urls = load_pull_requests_from_file("develop/prs.txt")
+    pull_request_urls = load_pull_requests_from_file("../develop/prs.txt")
+    pull_requests = [client.get_pull_request_from(url) for url in pull_request_urls]
 
-    analyzer = PullRequestAnalyzer(client)
-    metrics = analyzer.analyze_pull_requests(pull_request_urls)
+    report = CommentsReportCreator(client).create_comments_report(pull_requests)
 
-    report = csv_report_of(metrics)
-
-    print(report)
+    print(report.to_csv())
 
     client.close()
 
