@@ -3,7 +3,8 @@ import argparse
 
 from dotenv import load_dotenv
 
-from playgroundgithub.client.client import Configuration, create_github_client
+from playgroundgithub.client import GitHubClient
+from playgroundgithub.client.client import Configuration
 
 
 load_dotenv()
@@ -13,7 +14,7 @@ def main() -> None:
     parser.add_argument("query", help="The query to search for pull requests.")
     args = parser.parse_args()
 
-    client = create_github_client(Configuration.load())
+    client = GitHubClient.new_client(Configuration.load())
 
     pull_requests = client.search_pull_requests(args.query)
     for pull_request in pull_requests:
